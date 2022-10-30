@@ -1,0 +1,361 @@
+var get_CurrentURL = window.location.href;
+//var referrer = encodeURIComponent(document.referrer);
+var ref_link = document.referrer;
+var ref_domain = Extract_Hostname(ref_link);
+var currentUrl = encodeURIComponent(window.location.href);
+var Ex_currentDomain = Extract_Hostname(decodeURIComponent(currentUrl));
+var id_SubUrl = false;
+var root_domain = 'https://muatrafficthat.com';
+var domain_DB = '';
+var time = 0;
+var dimensions = getBrowserDimensions();
+height_screen = dimensions.height;
+width_screen = dimensions.width;
+var resolution = height_screen+' x '+width_screen;
+
+var main = document.getElementById("seostt");
+var displayCode = main.getAttribute("data-displayCode");
+var w = window.innerWidth - main.parentNode.clientWidth ;
+var h = window.innerHeight - main.parentNode.clientHeight ;
+
+if(w > 200){
+    w = 200;
+}
+if(h > 50){
+    h = 50;
+}
+
+var div = document.createElement("div");
+div.id = "widget";
+
+main.parentNode.appendChild(div);
+
+var randID = getCookie('SEOSST_randID');
+
+if (!randID) { 
+
+var randID = makeid(32);
+setCookie('SEOSST_randID',randID,1);
+
+}
+
+
+var active = 1;
+document.addEventListener("visibilitychange", function() {
+    if(document.visibilityState === 'visible') {
+        active = 1;
+    } else {
+      active = 0;
+    }
+})
+
+
+
+//Lấy dữ liệu traffic
+http_GetAsync(root_domain+'/api/api.php?action=whoisonline&ref_domain='+ref_link+'&current_domain='+currentUrl+'&resolution='+resolution, function(data) {
+
+});
+
+http_GetAsync(root_domain+'/api/api.php?action=checkURL&displayCode='+displayCode+'&randID='+randID+'&currentUrl='+currentUrl+'&ref_link='+ref_link, function(data) {
+  return_data = JSON.parse(data);
+  console.log(return_data);
+  
+  if(return_data.status == 1){
+
+    time = Math.floor(Math.random() * 20) + parseInt(return_data.time_onpage);
+
+
+    domain_DB = return_data.url;
+    var Ex_domainDB = Extract_Hostname(decodeURIComponent(domain_DB));
+
+    if(Ex_currentDomain == Ex_domainDB){
+
+      if(ref_domain == 'google.com' || ref_domain == 'google.com.vn'){
+
+              setCookie('SEOSST_SEARCH',get_CurrentURL,1);
+      
+              
+              var p = document.createElement("p");
+              p.id = "btn";
+              var html = '<span id="btn_Widget"><button id="btn_SEOSTT" style="font-size: 12px; background-color: #E95950; color: white; border-radius: 3px; padding: 5px 10px 5px 10px;  border: 2px solid #fff; font-weight: 700;"> ĐÁNH GIÁ BÀI VIẾT <b style="display: inline;"><span id="timer"></span></b></button></span>';
+              p.innerHTML = html;
+              div.parentNode.appendChild(p);
+              
+              
+              
+              document.getElementById("btn_SEOSTT").onclick = function(){
+        
+              
+                document.getElementById("timer").innerHTML = time;
+                var interval = setInterval(function() {
+                  if(active == 1) {
+if(time > 0){
+          time = time -1;
+}
+          }
+                  document.getElementById("timer").innerHTML = time;
+                  if (time == 0) {
+                    clearInterval(interval);
+                    setCookie('SEOSST_URL',return_data.url,1);
+
+
+                    if(return_data.href == 1){
+
+                      document.getElementById("btn_Widget").style.display ='none';
+                      var p = document.createElement("p");
+                      var html = '<span id="btn_Result"><button id="btn_Return" style="width:'+w+';height:'+h+'; font-size: 12px; background-color: #E95950; color: white; border-radius: 3px; padding: 5px 10px 5px 10px;  border: 2px solid #fff; font-weight: 700;"> ĐÃ HOÀN THÀNH BƯỚC 4. VUI LÒNG THỰC HIỆN TIẾP BƯỚC 5.<b style="display: inline;"><span id="timer"></span></b></button></span>';
+                      p.innerHTML = html;
+                      div.parentNode.appendChild(p);
+
+                    }else{
+                      
+                      http_GetAsync(root_domain+'/api/api.php?action=getcode&ref_domain='+ref_domain+'&randID='+randID+'&current_domain='+currentUrl, function(data) {
+      
+                        User_data = JSON.parse(data);
+
+                        if(User_data.status == 1){
+                          document.getElementById("btn_Widget").style.display ='none';
+                          var code = document.createElement("p");
+                          var html = '<span id="btn_Result"><p id="btn_Return" style="width: 140px;height: 32px; font-size: 12px; background-color: #E95950; color: white; border-radius: 3px; padding: 5px 10px 5px 10px;  border: 2px solid #fff; font-weight: 700; -webkit-user-select: all;  -moz-user-select: all; -ms-user-select: all;  user-select: all;"> '+User_data.key_code+'</p></span>';
+
+                          code.innerHTML = html;
+                          div.parentNode.appendChild(code);
+  
+  eraseCookie('SEOSST_SEARCH');
+  eraseCookie('SEOSST_URL');
+  eraseCookie('SEOSST_randID');
+  
+                        }
+
+                      });
+  
+  
+  
+                    }
+
+                    
+              
+                  }
+              
+                }, 1000); 
+
+
+
+            }
+      
+      
+
+
+      }else if(domain_DB == ref_link){
+
+
+      }else{
+
+      }
+
+    }else{
+
+
+    }
+
+
+
+  }else if(return_data.status == 2){
+
+    var x = getCookie('SEOSST_SEARCH');
+    if (x == return_data.url) { 
+
+
+      time = Math.floor(Math.random() * 20);
+
+      domain_DB = return_data.url;
+      var Ex_domainDB = Extract_Hostname(decodeURIComponent(domain_DB));
+
+      var p = document.createElement("p");
+      var html = '<span id="btn_Widget"><button id="btn_SEOSTT" style="width:'+w+';height:'+h+'; font-size: 12px; background-color: #E95950; color: white; border-radius: 3px; padding: 5px 10px 5px 10px;  border: 2px solid #fff; font-weight: 700;"> NHẬN MÃ NGAY <b style="display: inline;"><span id="timer"></span></b></button></span>';
+      p.innerHTML = html;
+      div.parentNode.appendChild(p);
+
+
+      document.getElementById("btn_SEOSTT").onclick = function(){
+            
+        var x = getCookie('SEOSST_URL');
+        if (x) {
+
+          document.getElementById("timer").innerHTML = time;
+          var interval = setInterval(function() {
+            if(active == 1) {
+    time = time -1;
+    } 
+            document.getElementById("timer").innerHTML = time;
+            if (time == 0) {
+              clearInterval(interval);
+
+
+              http_GetAsync(root_domain+'/api/api.php?action=checksubpage&currentUrl='+get_CurrentURL+'&randID='+randID+'&ref_link='+ref_link+'&displayCode='+displayCode, function(data) {
+                User_data = JSON.parse(data);
+                if(User_data.status == 1){   
+                  
+                  document.getElementById("btn_Widget").style.display ='none';
+                  var code = document.createElement("p");
+                  var html = '<span id="btn_Widget"><p id="btn_Return" style="width: 140px;height: 32px; font-size: 12px; background-color: #E95950; color: white; border-radius: 3px; padding: 5px 10px 5px 10px;  border: 2px solid #fff; font-weight: 700; -webkit-user-select: all;  -moz-user-select: all; -ms-user-select: all;  user-select: all;"> '+User_data.key_code+'</p></span>';
+        
+                  code.innerHTML = html;
+                  div.parentNode.appendChild(code);
+                  
+          eraseCookie('SEOSST_SEARCH');
+          eraseCookie('SEOSST_URL');
+  eraseCookie('SEOSST_randID');
+
+                }else{
+
+                  document.getElementById("btn_Widget").style.display ='none';
+                  var code = document.createElement("p");
+                  var html = '<span id="btn_Widget"><button id="btn_SEOSTT" style="width:'+w+';height:'+h+'; font-size: 16px; background-color: #f91515; color: white; border-radius: 3px; padding: 5px 10px 5px 10px;  border: 2px solid #fff; font-weight: 700;"> GỬI ĐÁNH GIÁ LẠI </button></span>';
+                  code.innerHTML = html;
+                  div.parentNode.appendChild(code);
+
+                }
+
+              });
+        
+            }
+        
+          }, 1000); 
+
+
+            
+        }
+      }
+
+    }else{
+
+    }
+
+    
+
+
+  }else if(return_data.status == 3){
+
+  }
+  else{
+   
+  }
+
+});
+
+
+function copyToClipboard(element) {
+  var node = document.getElementById(element);
+  var htmlContent = node.innerHTML;
+  var textContent = node.textContent;
+  copyTextToClipboard(textContent);
+  document.getElementById(element).innerHTML='Copied!';
+  setTimeout(function() { 
+    document.getElementById(element).innerHTML=textContent; 
+    }, 1000);
+  return;
+}
+
+
+
+function makeid(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
+
+
+
+
+function copyTextToClipboard(text) {
+  var textArea = document.createElement("textarea");
+  textArea.style.position = 'fixed';
+  textArea.style.top = 0;
+  textArea.style.left = 0;
+  textArea.style.width = '2em';
+  textArea.style.height = '2em';
+  textArea.style.padding = 0;
+  textArea.style.border = 'none';
+  textArea.style.outline = 'none';
+  textArea.style.boxShadow = 'none';
+  textArea.style.background = 'transparent';
+  textArea.value = text;
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  try {
+    var successful = document.execCommand('copy');
+    var msg = successful ? 'successful' : 'unsuccessful';
+  } catch (err) {
+
+  }
+  document.body.removeChild(textArea);
+}
+
+function Extract_RootDomain(e) {
+  var t = extractHostname(e),
+   a = t.split("."),
+   n = a.length;
+  return n > 2 && (t = a[n - 2] + "." + a[n - 1], 2 == a[n - 1].length && 2 == a[n - 1].length && (t = a[n - 3] + "." + t)), t
+}
+
+function http_GetAsync(theUrl, callback) {
+  var xmlHttp = new XMLHttpRequest();
+  xmlHttp.onreadystatechange = function() {
+   if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+    callback(xmlHttp.responseText);
+  }
+  xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+  xmlHttp.send(null);
+}
+
+function Extract_Hostname(url) {
+  var hostname;
+  if (url.indexOf("://") > -1) {
+   hostname = url.split('/')[2];
+  } else {
+   hostname = url.split('/')[0];
+  }
+  hostname = hostname.split(':')[0];
+  hostname = hostname.split('?')[0];
+  return hostname.replace(/^www\./, '');
+}
+  
+
+function setCookie(name,value,days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+
+
+
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+function eraseCookie(name) {   
+    document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
+function getBrowserDimensions() {
+    return {
+        width: window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+        height: window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+    }
+}
