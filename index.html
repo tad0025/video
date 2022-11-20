@@ -22,9 +22,7 @@ function showtime() {
 <h1 class="title">Hello World! </h1>
 fetch('https://jsonplaceholder.typicode.com/posts').then(res => res.text()).then(data => console.log(data));
 }
-setInterval(function () {
-	showTime();
-}, 1000);
+setTimeout(showtime, 3000)
 
 
 </script>
