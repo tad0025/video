@@ -5,14 +5,21 @@
 </head>
 <body>
 <script>
-	fetch('https://jsonplaceholder.typicode.com/posts').then(res => res.json()).then(data => { 	console.log(data) });
-	const options = {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify('code=342859250&_nv_id=10426&_short=6xm263r&_mis_id=14')
-	};
-
-	fetch('https://userseo.net/ajax/getShortConfirm', options).then((res) => res.json()).then(data => console.log(data));
+fetch('https://google.com/, {
+  method: 'POST',
+  headers: {
+    "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+  },
+  body: 'foo=bar&lorem=ipsum'
+})
+.then(json)
+.then(data => {
+  console.log('Request succeeded with JSON response', data);
+})
+.catch(error => {
+  console.log('Request failed', error);
+  });
+})
 </script>
 <h1>Online HTML Editor</h1>
 <div>This is real time online HTML Editor</div>
