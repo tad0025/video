@@ -5,21 +5,18 @@
 </head>
 <body>
 <script>
-fetch('https://google.com/', {
-  method: 'POST',
-  headers: {
-    "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-  },
-  body: 'foo=bar&lorem=ipsum'
+var data = {username: 'example'};
+
+fetch(url, {
+  method: 'POST', 
+  body: JSON.stringify(data), 
+  headers:{
+    'Content-Type': 'application/json'
+  }
 })
-.then(json)
-.then(data => {
-  console.log('Request succeeded with JSON response', data);
-})
-.catch(error => {
-  console.log('Request failed', error);
-  });
-})
+.then(res => res.json())
+.then(response => console.log('Success:', JSON.stringify(response)))
+.catch(error => console.error('Error:', error))
 </script>
 <h1>Online HTML Editor</h1>
 <div>This is real time online HTML Editor</div>
